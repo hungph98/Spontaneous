@@ -1,0 +1,10 @@
+.related_articles {
+  margin-top: 10px;
+  li {
+    font-size: 17px;
+    padding: 4px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

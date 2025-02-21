@@ -13,7 +13,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const name = e.target[0].value;
+        const username = e.target[0].value;
         const email = e.target[1].value;
         const password = e.target[2].value;
 
@@ -24,13 +24,13 @@ const Register = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    name,
+                    username,
                     email,
                     password
                 })
             });
 
-            res.status === 201 && router.push("/dashboard/login?success=Acount has been created")
+            res.status === 201 && router.push("/login?success=Acount has been created")
         } catch (err) {
             setErr(true);
             console.log(err)
@@ -65,7 +65,7 @@ const Register = () => {
                     {err && "Something went wrong"}
                 </form>
                 <span className={styles.or}> - OR - </span>
-                <Link href={"/dashboard/login"} className={styles.link}>
+                <Link href={"/login"} className={styles.link}>
                     Login with an existing account
                 </Link>
             </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import {Card, CardHeader, CardFooter, Image, Button} from "@nextui-org/react";
+import {Card, CardHeader, Image} from "@nextui-org/react";
 
 const RoomDecor = () => {
     return (

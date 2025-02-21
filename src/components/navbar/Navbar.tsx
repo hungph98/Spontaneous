@@ -13,7 +13,8 @@ const Navbar = () => {
                     </Link>
                     <div className={'hidden xl:flex gap-4 items-center'}>
                         <Link href={'/'}>Home</Link>
-                        <Link href={'/dashboard'}>Dashboard</Link>
+                        <Link href={'/catalog'}>Catalog</Link>
+                        <Link href={'/aboutus'}>About Us</Link>
                     </div>
                 </div>
                 {/* right */}

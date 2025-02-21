@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
+import React from "react";
 import ProductsByCatalog from "@/components/products/ProductsByCatalog";
 
 const CatalogPage = ({params}: {params: {id: string}}) => {
