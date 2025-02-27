@@ -91,17 +91,18 @@ export const GET = async () => {
     try {
         const cart = await readCart();
 
-        const { totalQuantity, totalPrice, totalAmount } = cart.reduce(
+        const { totalQuantity, totalPrice, totalPriceBeforeAmount, totalAmount } = cart.reduce(
             (acc, product) => {
                 acc.totalQuantity += product.item.quantity;
-                acc.totalPrice += product.item.price * product.item.quantity - product.item.amount;
+                acc.totalPrice += product.item.price * product.item.quantity;
+                acc.totalPriceBeforeAmount += product.item.price * product.item.quantity - product.item.amount;
                 acc.totalAmount += product.item.amount;
                 return acc;
             },
-            { totalQuantity: 0, totalPrice: 0, totalAmount: 0}
+            { totalQuantity: 0, totalPrice: 0, totalPriceBeforeAmount: 0, totalAmount: 0}
         );
 
-        return new NextResponse(JSON.stringify({cart, totalQuantity, totalPrice, totalAmount }), {
+        return new NextResponse(JSON.stringify({cart, totalQuantity, totalPrice, totalPriceBeforeAmount, totalAmount }), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });

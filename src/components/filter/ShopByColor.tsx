@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import arrowUp from "../../../public/arrow/arrow-up.png";
 import arrowDown from "../../../public/arrow/down-arrow.png";
@@ -19,14 +19,25 @@ const colors = [
     { name: "Pink", hex: "#FFB6C1" },
 ];
 
-const ShopByColor = ({onFilter}) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedColors, setSelectedColors] = useState([]);
+interface Props {
+    onFilter: (colors: Color[]) => void;
+}
 
-    const toggleColor = (color) => {
-        const updatedColors = selectedColors.includes(color)
-            ? selectedColors.filter((c) => c !== color)
-            : [...selectedColors, color];
+interface Color {
+    name: string;
+    hex: string;
+    border?: boolean;
+}
+
+const ShopByColor: React.FC<Props> = ({onFilter}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedColors, setSelectedColors] = useState<Color[]>([]);
+
+    const toggleColor = (color: string): void => {
+        // Check if the color is already in the selectedColors
+        const updatedColors = selectedColors.some((c: Color) => c.name === color)
+            ? selectedColors.filter((c: Color) => c.name !== color) // Remove the color if it's already selected
+            : [...selectedColors, { name: color, hex: "#000000" }]; // Add the color (defaulting hex to black)
 
         setSelectedColors(updatedColors);
         onFilter(updatedColors);
@@ -57,7 +68,7 @@ const ShopByColor = ({onFilter}) => {
                                             style={{ backgroundColor: color.hex }}
                                             onClick={() => toggleColor(color.name)}
                                         >
-                                            {selectedColors.includes(color.name) && (
+                                            {selectedColors.some((c) => c.name === color.name) && (
                                                 <span className={'text-white font-bold'}>✔</span>
                                             )}
                                         </button>

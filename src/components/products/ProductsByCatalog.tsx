@@ -6,9 +6,16 @@ import Image from "next/image";
 import productImage from '../../../public/product.png';
 import Modal from "@/components/modal/Modal";
 
+interface Product {
+    _id: string;
+    title: string;
+    description: string;
+    price: number;
+    image: string[];
+}
 
 const ProductsByCatalog = ({id}: {id: string}) => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [cart, setCart] = useState([]);
 
@@ -20,7 +27,7 @@ const ProductsByCatalog = ({id}: {id: string}) => {
         setIsOpenModal(false)
     };
 
-    const addProductToCart = async (item) => {
+    const addProductToCart = async (item: Product) => {
         const product = [{
             productId: item._id,
             quantity: 1,
@@ -40,12 +47,19 @@ const ProductsByCatalog = ({id}: {id: string}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const productItems = await fetch(`http://localhost:3000/api/product?catalog_id=${id}`);
+            const productItems = await fetch(`/api/product?catalog_id=${id}`);
             const res = await productItems.json();
+
+            if (!productItems.ok) {
+                return new Error('Failed to fetch products');
+            }
+
+            if (!res.data || res.data.length === 0) {
+                return new Error('No products found');
+            }
 
             setProducts(res.data)
         };
-
 
         fetchData();
     }, []);
@@ -55,15 +69,15 @@ const ProductsByCatalog = ({id}: {id: string}) => {
             {
                 products.map((product) => (
                     <div className="col-span-1 border h-[500px] rounded-lg flex" key={product._id}>
-                        <div className={'flex flex-col p-2 '}>
+                        <div className={'flex flex-col p-2 w-full'}>
                             <div className={'h-2/3 bg-gray-200'}>
                                 <div className={'relative w-full h-80'}>
-                                    <Link href={'/product/' + product._id}>
+                                    <Link href={'/src/app/product/' + product._id}>
                                         <Image src={product.image[0] ?? productImage}
                                                alt={'product'}
                                                fill
                                                sizes={'25vw'}
-                                               className={'absolute object-cover rounded-md z-10 transition-opacity easy duration-500'}
+                                               className={'absolute object-cover z-10 transition-opacity easy duration-500'}
                                         />
                                     </Link>
                                 </div>

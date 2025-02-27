@@ -9,12 +9,12 @@ const Navbar = () => {
                 {/* left */}
                 <div className={'w-1/3 xl:w-1/2 flex items-center gap-12'}>
                     <Link href={'/'} className={'flex items-center gap-3'}>
-                        <div className={'text-2xl tracking-wide'}>Spontaneous</div>
+                        <div className={'text-4xl tracking-wide'}>Spontaneous</div>
                     </Link>
                     <div className={'hidden xl:flex gap-4 items-center'}>
-                        <Link href={'/'}>Home</Link>
-                        <Link href={'/catalog'}>Catalog</Link>
-                        <Link href={'/aboutus'}>About Us</Link>
+                        <Link href={'/'} className={'text-xl'}>Home</Link>
+                        <Link href={'/catalog'} className={'text-xl'}>Catalog</Link>
+                        <Link href={'/aboutus'} className={'text-xl'}>About Us</Link>
                     </div>
                 </div>
                 {/* right */}

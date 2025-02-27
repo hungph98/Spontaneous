@@ -12,6 +12,7 @@ import {motion} from "framer-motion";
 import {ThemeContext} from "@/components/context/ThemeContext";
 
 const CarouselHomePage = () => {
+    // @ts-ignore
     const {mode} = useContext(ThemeContext);
     const [activeIndex, setActiveIndex] = useState(0);
     const [transitionDirection, setTransitionDirection] = useState("next");

@@ -7,12 +7,42 @@ import QuantitySelector from "@/components/selector/QuantitySelector";
 import Link from "next/link";
 import ThisPiece from "@/components/about/ThisPiece";
 import AboutProduct from "@/components/about/AboutProduct";
+import {useParams} from "next/navigation";
+
+interface Product {
+    _id: string;
+    name: string;
+    price: number;
+}
+
+interface CartItem {
+    productId: string;
+    quantity: number;
+}
+
+interface Product {
+    title: string;
+    description: string;
+    price: number;
+    tax: { value: number };
+    shipping: { shipping_fee: number };
+}
+
+interface Tax {
+    value: number
+}
+
+interface Shipping {
+    title: string;
+    shipping_fee: number;
+    delivery_date: string;
+}
 
 const ProductSinglePage = ({params}: { params: { id: string } }) => {
-    const {id} = React.use(params);
-    const [product, setProduct] = useState([]);
-    const [tax, setTax] = useState([]);
-    const [shipping, setShipping] = useState([]);
+    const {id} = useParams<{id: string}>();
+    const [product, setProduct] = useState<Product | null>();
+    const [tax, setTax] = useState<Tax | null>();
+    const [shipping, setShipping] = useState<Shipping | null>();
     const [images, setImages] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [cart, setCart] = useState([]);
@@ -49,7 +79,9 @@ const ProductSinglePage = ({params}: { params: { id: string } }) => {
                 setLoading(false)
             }
         };
-        fetchData();
+        fetchData().then(() => {
+            console.log('oki')
+        });
     }, []);
 
 
@@ -57,22 +89,22 @@ const ProductSinglePage = ({params}: { params: { id: string } }) => {
         return moment().format("YYYY-MM-DD");
     }
 
-    const arriveShipping = (date, days) => {
+    const arriveShipping = (date: string, days: string) => {
         return moment(date).add(days, "days").format("YYYY-MM-DD");
     }
 
-    const formatDate = (isoString) => {
+    const formatDate = (isoString: string) => {
         return moment(isoString).format("dddd, MMMM DD, YYYY")
     }
 
-    const dateArrived = formatDate(arriveShipping(getDateToday(), shipping['delivery_date']));
+    const dateArrived = formatDate(arriveShipping(getDateToday(), shipping ? shipping.delivery_date : '0'));
 
-    const handleQuantityChange = (newQuantity) => {
+    const handleQuantityChange = (newQuantity: number) => {
         setQuantity(newQuantity)
     }
 
-    const addProductToCart = async (item, qty) => {
-        const product = [{
+    const addProductToCart = async (item: Product, qty: number) => {
+        const product: CartItem[] = [{
             productId: item._id,
             quantity: qty,
         }];
@@ -103,12 +135,12 @@ const ProductSinglePage = ({params}: { params: { id: string } }) => {
                             <div
                                 className={'col-span-6 flex flex-col justify-between p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]'}>
                                 <div className={'flex flex-col'}>
-                                    <span className={'text-2xl font-semibold'}>{product.title}</span>
-                                    <span>{product.description}</span>
-                                    <span className={'mt-8 flex'}>$ {product.price - tax.value + shipping.shipping_fee}
+                                    <span className={'text-2xl font-semibold'}>{product?.title}</span>
+                                    <span>{product?.description}</span>
+                                    <span className={'mt-8 flex'}>$ {product?.price ? product.price - (tax?.value ? tax.value : 0) + (shipping?.shipping_fee ? shipping.shipping_fee : 0) : 0}
                                         <p className={'line-through ml-2'}>$ {product.price}</p>
                                 </span>
-                                    <span>{shipping.title}</span>
+                                    <span>{shipping?.title}</span>
                                     <div>
                                         <span>Arrives in {dateArrived}</span>
                                     </div>
@@ -126,7 +158,7 @@ const ProductSinglePage = ({params}: { params: { id: string } }) => {
                                     <p>Enjoy complimentary design advice. <Link href={'/design-services'}
                                                                                 className={'underline'}>Get
                                         Started</Link></p>
-                                    <p>Returns made easy. <Link href={'/help/article/return_policy'}
+                                    <p>Returns made easy. <Link href={'/src/app/help/article/return_policy'}
                                                                 className={'underline'}>See Details</Link></p>
                                     <p></p>
                                 </div>

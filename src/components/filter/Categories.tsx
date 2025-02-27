@@ -3,13 +3,20 @@
 import Image from "next/image";
 import arrowUp from "../../../public/arrow/arrow-up.png";
 import arrowDown from "../../../public/arrow/down-arrow.png";
-import {useState} from "react";
+import React, {SetStateAction, useState} from "react";
+
+interface Item {
+    name: string;
+    category: string;
+}
 
 const Categories = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [items, setItems] = useState<Item[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredItems, setFilteredItems] = useState([]);
+    const [filteredResults, setFilteredResults] = useState<Item[]>([]);
     const [data, setData] = useState([]);
 
     const categories = [
@@ -22,7 +29,7 @@ const Categories = () => {
         'Tubs And Whirlpools',
     ];
 
-    const handleCheckboxChange = (category) => {
+    const handleCheckboxChange = (category: string) => {
         setSelectedCategories((prev) =>
             prev.includes(category)
                 ? prev.filter((item) => item !== category)
@@ -30,20 +37,22 @@ const Categories = () => {
         );
     };
 
-    const handleSearchChange = (event) => {
+    const handleSearchChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchTerm(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const filtered = items.filter((item) => {
+
+        const filtered = items.filter((item: Item) => {
             const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
+            const matchesCategory = selectedCategories.length > 0 ? selectedCategories.includes(item.category) : true;
 
             return matchesSearch && matchesCategory;
         });
         setFilteredResults(filtered);
     };
+
     return (
         <div>
             <div onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>

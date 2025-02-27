@@ -2,7 +2,12 @@
 
 import React, {useState} from "react";
 
-const QuantitySelector = ({ initialQuantity = 1, onChange}) => {
+interface Props {
+    initialQuantity?: number;
+    onChange: (quantity: number) => void;
+}
+
+const QuantitySelector: React.FC<Props> = ({ initialQuantity = 1, onChange}) => {
     const [quantity, setQuantity] = useState(initialQuantity);
 
     const handleDecrease = () => {
@@ -17,8 +22,8 @@ const QuantitySelector = ({ initialQuantity = 1, onChange}) => {
         onChange(quantity + 1);
     };
 
-    const handleInputChange = (e: React.ChangeEvent) => {
-        const value = parseInput(e.target.value, 10);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value, 10);
 
         if (!isNaN(value) && value >= 1) {
             setQuantity(value)
@@ -39,7 +44,7 @@ const QuantitySelector = ({ initialQuantity = 1, onChange}) => {
                     value={quantity}
                     onChange={handleInputChange}
                     min={1}
-                    className="w-20 h-[34px] text-center border rounded-md"
+                    className="w-10 h-[34px] text-center border rounded-md"
                 />
                 <button
                     onClick={handleIncrease}

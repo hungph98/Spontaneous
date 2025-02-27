@@ -2,9 +2,10 @@
 
 import React from "react";
 import ProductsByCatalog from "@/components/products/ProductsByCatalog";
+import {useParams} from "next/navigation";
 
 const CatalogPage = ({params}: {params: {id: string}}) => {
-    const {id} = React.use(params);
+    const {id} = useParams<{id: string}>();
 
     return (
         <div className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>

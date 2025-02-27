@@ -6,24 +6,45 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import catalogImage from "../../../public/category.png"
 
+interface Catalog {
+    _id: string;
+    title: string;
+    image: string;
+}
+
 const ProductPage = () => {
-    const [catalogs, setCatalogs] = useState([]);
+    const [catalogs, setCatalogs] = useState<Catalog[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(`http://localhost:3000/api/catalog`);
+            const res = await fetch(`/api/catalog`);
             const data = await res.json();
+
+            if (!res.ok) {
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                return
+            }
 
             setCatalogs(data)
         };
 
-        fetchData();
+        fetchData().finally(() => {
+            setIsLoading(false)
+        });
     }, []);
+
+    if (isLoading) {
+        return <p className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>Loading...</p>
+    }
 
     return (
         <div className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>
             <div className={'mt-32'}>
-                <Link href={'/'}>
+                <Link href={'/public'}>
                     <Image src={leftArrow}
                            alt={'left-arrow'}
                            width={40}
@@ -49,7 +70,7 @@ const ProductPage = () => {
                                             <span className={'mt-12 ml-8 text-xl font-[500]'}>
                                                 {catalog.title}
                                             </span>
-                                            <Link href={'/catalog/' + catalog._id}>
+                                            <Link href={'/src/app/catalog' + catalog._id}>
                                                 <button className={'mt-2 border bg-slate-200 rounded-lg p-2 ml-12'}>Learn more</button>
                                             </Link>
                                         </div>

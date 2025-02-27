@@ -8,6 +8,10 @@ import React, {useEffect, useState} from "react";
 import ShopByCategory from "@/components/brand/shopInBrand/ShopByCategory";
 import {usePathname} from "next/navigation";
 
+interface Catalog {
+    title: string;
+}
+
 const Contents = [
     {
         title: 'The Gravena Collection',
@@ -33,7 +37,7 @@ const Contents = [
 const BrandPages = () => {
     const pathname = usePathname();
     const [product, setProduct] = useState();
-    const [catalog, setCatalog] = useState();
+    const [catalog, setCatalog] = useState<Catalog | undefined>();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -135,7 +139,7 @@ const BrandPages = () => {
                             />
                         </div>
                         <div className={'flex flex-col text-center justify-center mt-6'}>
-                            <h1 className={'text-2xl'}>Kitchen {catalog.title}</h1>
+                            <h1 className={'text-2xl'}>Kitchen {catalog?.title}</h1>
                             <button className={'underline'}>Shop Now</button>
                         </div>
                     </div>
@@ -149,7 +153,7 @@ const BrandPages = () => {
                             />
                         </div>
                         <div className={'flex flex-col text-center justify-center mt-6'}>
-                            <h1 className={'text-2xl'}>Bathroom {catalog.title}</h1>
+                            <h1 className={'text-2xl'}>Bathroom {catalog?.title}</h1>
                             <button className={'underline'}>Shop Now</button>
                         </div>
                     </div>

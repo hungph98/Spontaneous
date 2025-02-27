@@ -29,8 +29,8 @@
     border: 1px solid gray;
     border-radius: 5px;
     outline: none;
-    color: #7d7c7c;
-    font-size: 20px;
+    /*color: #7d7c7c;*/
+    font-size: 18px;
     font-weight: 300;
     height: 60px;
 }
@@ -40,7 +40,7 @@
     height: 60px;
     padding: 20px;
     cursor: pointer;
-    background-color: #53c28b;
+    background-color: crimson;
     border: none;
     border-radius: 5px;
     color: #eee;
@@ -48,7 +48,7 @@
 }
 
 .button:hover {
-    background-color: #49b07d;
+    background-color: red;
 }
 
 .or {

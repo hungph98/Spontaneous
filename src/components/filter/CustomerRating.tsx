@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import arrowUp from "../../../public/arrow/arrow-up.png";
 import arrowDown from "../../../public/arrow/down-arrow.png";
@@ -12,11 +12,15 @@ const ratings = [
     { value: "all", label: "All Reviewed Products" },
 ];
 
-const CustomerRating = ({onFilter}) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [selectedRating, setSelectedRating] = useState(null);
+interface Props {
+    onFilter: (rating: { (): string }) => void;
+}
 
-    const handleRatingChange = (rating) => {
+const CustomerRating: React.FC<Props> = ({onFilter}) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedRating, setSelectedRating] = useState<string | null>(null);
+
+    const handleRatingChange = (rating: () => string) => {
         setSelectedRating(rating);
         onFilter(rating);
     };
@@ -43,13 +47,17 @@ const CustomerRating = ({onFilter}) => {
                                             type={'checkbox'}
                                             id={`rating-${index}`}
                                             checked={selectedRating === rating.value}
-                                            onChange={() => handleRatingChange(rating.value)}
+                                            onChange={() => handleRatingChange(rating.value.toString)}
                                             className={'mr-2 w-[20px] h-[20px]'}
                                         />
                                         <label htmlFor={`rating-${index}`} className="flex items-center gap-1">
                                             {Array.from({ length: 5 }).map((_, i) => (
                                                 <span key={i}>
-                                                    {i < rating.value ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
+                                                    {
+                                                        i < (typeof rating.value === 'number' ? rating.value : Number(rating.value))
+                                                            ? <FaStar className="text-yellow-500" />
+                                                            : <FaRegStar className="text-gray-400" />
+                                                    }
                                                 </span>
                                             ))}
                                             {rating.value !== 5 && rating.value !== "all" && <span>& Up</span>}

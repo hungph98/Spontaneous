@@ -3,7 +3,7 @@
 import Image from "next/image";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import QuantitySelector from "@/components/selector/QuantitySelector";
 import productImage from '../../../public/product.png'
 
@@ -15,14 +15,12 @@ type CartItem = {
     title: string,
     description: string,
     map(param: (item: any) => any): any;
+    item: any;
+    image: string;
 }
 
 const CartModal = () => {
-    const modalRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(true);
-    // @ts-ignore
-    const [cart, setCart] = useState<CartItem>([]);
-    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [cart, setCart] = useState<CartItem[]>([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -46,7 +44,6 @@ const CartModal = () => {
                 }
 
                 setCart(data.cart)
-                setTotalQuantity(data.totalQuantity);
                 setTotalPrice(data.totalPrice);
                 setTotalAmount(data.totalAmount);
                 setLoading(false);
@@ -57,7 +54,9 @@ const CartModal = () => {
                 setLoading(false);
             }
         };
-        fetchCart();
+        fetchCart().then(() => {
+            console.log('oki')
+        } );
     }, []);
 
     const handleQuantityChange = (newQuantity: any) => {
@@ -80,11 +79,11 @@ const CartModal = () => {
         localStorage.setItem("cart", JSON.stringify(data.cart))
     }
 
-    if (loading) return <p>Loading cart...</p>;
+    if (loading) return;
 
     return (
         <div
-            className={'cart-modal-content w-max absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-10 flex flex-col gap-6 z-20'}
+            className={'w-max absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-10 flex flex-col gap-6 z-20'}
             style={{'right': '-152px'}}
         >
             {
@@ -135,10 +134,10 @@ const CartModal = () => {
                                             <div className={'flex justify-between text-sm'}>
                                                 <span className={'text-base'}>Price: {itemCart.item.price}</span>
                                             </div>
-                                            <div className={'flex justify-between text-sm mt-4'}>
+                                            <div className={'flex justify-between text-sm'}>
                                                 <span className={'text-base flex items-center'}>
-                                                    <p className={'mr-4'}>Qty: </p>
-                                                    <QuantitySelector initialQuantity={itemCart.item.quantity} onChange={handleQuantityChange}/>
+                                                    <p className={'mr-4'}>Qty: {itemCart.item.quantity}</p>
+                                                    {/*<QuantitySelector initialQuantity={itemCart.item.quantity} onChange={handleQuantityChange}/>*/}
                                                 </span>
                                                 <button
                                                     className={'text-blue-500 text-base'}

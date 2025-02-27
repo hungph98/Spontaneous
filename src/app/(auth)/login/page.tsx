@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from './page.module.css';
 import {signIn, useSession} from "next-auth/react";
 import {useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 
 const Login = () => {
     const session = useSession();
@@ -12,15 +12,17 @@ const Login = () => {
     const params = useSearchParams();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setError(params.get("error"));
-        setSuccess(params.get("success"))
+        setError(params.get("error") ?? "");
+        setSuccess(params.get("success") ?? "")
+        setLoading(false);
     }, [params]);
 
     if (session.status === "loading") {
         return (
-            <p>Loading...</p>
+            <p className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>Loading...</p>
         )
     }
 
@@ -28,16 +30,28 @@ const Login = () => {
         router?.push("/")
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const email = e.target[0].value;
-        const password = e.target[1].value;
+
+        const form = e.target as HTMLFormElement;
+        const email = (form[0] as HTMLInputElement).value;
+        const password = (form[1] as HTMLInputElement).value;
 
         signIn("credentials", {
             email,
             password
-        })
+        }).then(r => {
+            if (!(r) || String(r.status) === "ok") {
+                router?.push("/")
+            }
+        }).catch(e => {
+            setError(e.message)
+        }
+        )
     }
+
+    if (loading) return <p className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>Loading...</p>;
+
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>{success ? success : "Welcome Back"}</h1>
@@ -49,12 +63,14 @@ const Login = () => {
                     placeholder={'Email'}
                     required={true}
                     className={styles.input}
+                    name={"email"}
                 />
                 <input
                     type={"password"}
                     placeholder={"Password"}
                     required={true}
                     className={styles.input}
+                    name={"password"}
                 />
                 <button className={styles.button}>Login</button>
                 {error && error}

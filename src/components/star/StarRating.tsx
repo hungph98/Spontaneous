@@ -2,6 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
 
 
+// @ts-ignore
 const StarRating = ({rating}) => {
     const stars = [];
 

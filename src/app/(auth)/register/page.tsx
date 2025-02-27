@@ -2,7 +2,7 @@
 
 import styles from './page.module.css';
 import Link from "next/link";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {useRouter} from "next/navigation";
 
 
@@ -10,15 +10,16 @@ const Register = () => {
     const [err, setErr] = useState(false);
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const username = e.target[0].value;
-        const email = e.target[1].value;
-        const password = e.target[2].value;
+        const form = e.target as HTMLFormElement;
+        const username = (form[0] as HTMLInputElement).value;
+        const email = (form[1] as HTMLInputElement).value;
+        const password = (form[2] as HTMLInputElement).value;
 
         try {
-            const res = await fetch("/api/auth/register", {
+            const res = await fetch("/api/client/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

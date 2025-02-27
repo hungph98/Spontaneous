@@ -1,16 +1,16 @@
 "use client"
 
 import { useSession } from 'next-auth/react'
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 
 const Profile = () => {
-    const { data: session, status} = useSession();
+    const {status} = useSession();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
     const [message, setMessage] = useState("");
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const response = await fetch("/api/article", {

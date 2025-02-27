@@ -6,6 +6,7 @@ import downArrow from '../../../public/arrow/down-arrow.png';
 import upArrow from '../../../public/arrow/arrow-up.png'
 import Image from "next/image";
 
+// @ts-ignore
 const Modal = ({isOpen, onClose, item}) => {
     const [isVisible, setIsVisible] = useState(false);
 

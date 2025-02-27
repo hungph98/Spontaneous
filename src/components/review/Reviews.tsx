@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import StarRating from "@/components/star/StarRating";
 import moment from "moment/moment";
 
@@ -7,15 +7,20 @@ type Review = {
     _id: string;
     comment: string;
     createdAt: string;
-    rating: number
+    rating: number,
+    helpful: number;
 };
 
-const Reviews = () => {
-    const [reviews, setReviews] = useState<Review[]>([]);
+interface ReviewsProps {
+    reviews: Review[];
+}
+
+const Reviews: React.FC<ReviewsProps> = ({reviews}) => {
     const [totalReviews, setTotalReviews] = useState(0);
     const [averageRating, setAverageRating] = useState(0)
     const [isLoading, setIsLoading] = useState(true);
     const [count, setCount] = useState(0);
+    const [reviewList, setReviewList] = useState<Review[]>(reviews);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -31,7 +36,7 @@ const Reviews = () => {
                     return;
                 }
 
-                setReviews(data.data);
+                setReviewList(data.data);
                 setTotalReviews(data.totalReviews);
                 setAverageRating(data.averageRating);
             } catch (error) {
@@ -40,14 +45,21 @@ const Reviews = () => {
                 setIsLoading(false)
             }
         };
-        fetchReviews();
+        fetchReviews().then(() => {
+            console.log('oki')
+        }).catch(() => {
+            console.log('error')
+        });
     }, []);
 
     const formatDate = (isoString: moment.MomentInput) => {
         return moment(isoString).format("MM/DD/YYYY")
     }
 
-    const increment = () => {
+    const handleHelpfulClick = (index: number): void => {
+        const updatedReviews = [...reviewList];
+        updatedReviews[index].helpful += 1;
+        setReviewList(updatedReviews);
         if (count == 0) {
             setCount(count + 1)
         } else if (count == 1) {
@@ -80,7 +92,7 @@ const Reviews = () => {
                 <div className={'h-[1px] mt-4'} style={{'background': '#ededed'}}/>
                 <div className={'mt-12'}>
                     {
-                        reviews.map((review) => (
+                        reviewList.map((review, index) => (
                             <div className={'grid grid-cols-3 gap-32'} key={review._id}>
                                 <div className={'col-span-2 mt-4'}>
                                     <StarRating rating={review.rating}/>
@@ -94,7 +106,7 @@ const Reviews = () => {
                                     Date: {formatDate(review.createdAt)}
                                     <p>Review name</p>
                                     <div className={'mt-4 flex items-center'} style={{'color': '#333'}}>
-                                        <button onClick={increment}>👍 Helpful ({count})</button>
+                                        <button onClick={() => handleHelpfulClick(index)}>👍 Helpful ({count})</button>
                                     </div>
                                 </div>
                             </div>

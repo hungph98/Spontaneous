@@ -6,6 +6,7 @@ import styles from './darkmodetoggle.module.scss';
 import Image from "next/image";
 
 const DarkModeToggle = () => {
+    // @ts-ignore
     const {toggle, mode} = useContext(ThemeContext);
     const [show, setShow] = useState(true);
 
@@ -30,7 +31,7 @@ const DarkModeToggle = () => {
                         >
                             Light 🔆
                         </div>
-                        <div className={styles.icon} style={{'margin-top': '10px'}}
+                        <div className={styles.icon} style={{'marginTop': '10px'}}
                              onClick={mode === 'light' ? toggle : ''}
                         >
                             Dark 🌙

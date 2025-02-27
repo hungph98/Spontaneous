@@ -8,25 +8,34 @@ import CustomerRating from "@/components/filter/CustomerRating";
 import Link from "next/link";
 import productImage from "../../../../public/product.png";
 import Modal from "@/components/modal/Modal";
-import {useEffect, useState} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 import Image from "next/image";
 
+interface Product {
+    _id: string;
+    title: string;
+    description: string;
+    price: number;
+    image: string[];
+}
+
+// @ts-ignore
 const ShopByCategory = ({title}) => {
     const [priceFilter, setPriceFilter] = useState({min: 0, max: 1000000});
     const [colorFilter, setColorFilter] = useState([]);
     const [selectedRating, setSelectedRating] = useState(null);
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [isOpenModal, setIsOpenModal] = useState(false);
 
-    const handleFilterPrice = (newFilter) => {
+    const handleFilterPrice = (newFilter: SetStateAction<{ min: number; max: number; }>) => {
         setPriceFilter(newFilter);
     }
 
-    const handleFilterColor = (newColors) => {
+    const handleFilterColor = (newColors: SetStateAction<never[]>) => {
         setColorFilter(newColors);
     }
 
-    const handleRatingFilter = (rating) => {
+    const handleRatingFilter = (rating: SetStateAction<null>) => {
         setSelectedRating(rating);
     };
 
@@ -85,7 +94,7 @@ const ShopByCategory = ({title}) => {
                             products.map((product) => (
                                 <div className="col-span-1 flex shadow-[0_3px_10px_rgb(0,0,0,0.2)]" key={product._id}>
                                     <div className={'flex flex-col p-2 '}>
-                                        <Link href={'/product/' + product._id}>
+                                        <Link href={'/src/app/product/' + product._id}>
                                             <div className={'h-2/3 bg-gray-200'}>
                                                 <div className={'relative w-full h-60'}>
                                                     <Image src={product.image[0] ?? productImage}

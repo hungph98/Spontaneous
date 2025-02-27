@@ -2,10 +2,27 @@
 
 import {useEffect, useState} from "react";
 
+interface Product {
+    title: string,
+    description: string,
+    price: number,
+}
+
+interface Shipping {
+    title: string,
+    shipping_fee: number,
+    delivery_date: string,
+}
+
+interface Tax {
+    value: number
+}
+
+// @ts-ignore
 const ItemInCart = ({productId}) => {
-    const [product, setProduct] = useState()
-    const [shipping, setShipping] = useState()
-    const [tax, setTax] = useState()
+    const [product, setProduct] = useState<Product>()
+    const [shipping, setShipping] = useState<Shipping>()
+    const [tax, setTax] = useState<Tax>()
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -17,16 +34,18 @@ const ItemInCart = ({productId}) => {
                 const resTax = await fetch(`api/tax/${dataProduct.data.tax_id}`);
                 const dataTax = await resTax.json();
 
-                setProduct(dataProduct);
-                setShipping(dataShipping);
-                setTax(dataTax);
+                setProduct(dataProduct.data);
+                setShipping(dataShipping.data);
+                setTax(dataTax.data);
             } catch (error) {
                 return null;
             }
         }
 
         if (productId) {
-            fetchItem()
+            fetchItem().then(() => {
+                console.log('oki')
+            })
         }
     },[productId])
 
@@ -36,18 +55,18 @@ const ItemInCart = ({productId}) => {
 
     return (
         <div>
-            <h2 className={'text-2xl'}>{product.data.title}</h2>
-            <p className={'mt-2'}>{product.data.description}</p>
+            <h2 className={'text-2xl'}>{product.title}</h2>
+            <p className={'mt-2'}>{product.description}</p>
             {
-                shipping.data.title === 'Global Shipping' ?
+                shipping.title === 'Global Shipping' ?
                     <div>
-                        <p>Shipping Fee: $ {shipping.data.shipping_fee}</p>
+                        <p>Shipping Fee: $ {shipping.shipping_fee}</p>
                     </div>
                     :
                     <p>di </p>
             }
-            <p>Amount: $ {tax.data.value}</p>
-            <p className={''}>Price: $ {product.data.price}</p>
+            <p>Amount: $ {tax.value}</p>
+            <p className={''}>Price: $ {product.price}</p>
         </div>
     )
 }

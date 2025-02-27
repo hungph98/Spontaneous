@@ -13,6 +13,7 @@ const NavIcons = () => {
     const [showForm, setShowForm] = useState(true);
     const [showCartModal, setShowCartModal] = useState(true);
     const [totalQuantity, setTotalQuantity] = useState(0);
+    const [loading, setLoading] = useState(true);
     const session = useSession();
     const router = useRouter();
 
@@ -38,8 +39,8 @@ const NavIcons = () => {
             >
                 <Image src={'/profile.png'}
                        alt={'Profile'}
-                       width={22}
-                       height={22}
+                       width={24}
+                       height={24}
                        className={'cursor-pointer'}
                 />
             </button>
@@ -66,16 +67,25 @@ const NavIcons = () => {
                     </div>
 
             }
-            <Image
-                src={'/notification.png'}
-                alt={'Notification'}
-                width={22}
-                height={22}
-                className={'cursor-pointer'}
-            />
+            <button>
+                <div>
+                    <Image
+                        src={'/notification.png'}
+                        alt={'Notification'}
+                        width={24}
+                        height={24}
+                        className={'cursor-pointer'}
+                    />
+                    <div className={'absolute -top-4 right-9 w-6 h-6 rounded-full text-white text-sm flex items-center justify-center'}
+                         style={{'backgroundColor': 'red'}}
+                    >
+                        0
+                    </div>
+                </div>
+            </button>
             <button onClick={() => setShowCartModal(!showCartModal)}>
                 <div>
-                    <Image src={cartIcon} alt={'cart-icon'} width={22} height={22}/>
+                    <Image src={cartIcon} alt={'cart-icon'} width={24} height={24}/>
                     <div className={'absolute -top-4 -right-4 w-6 h-6 rounded-full text-white text-sm flex items-center justify-center'}
                          style={{'backgroundColor': 'red'}}
                     >

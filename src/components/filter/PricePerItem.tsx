@@ -1,7 +1,7 @@
 "use client"
 
-import { useForm } from "react-hook-form";
-import {useState} from "react";
+import { SubmitHandler, FieldValues, useForm} from "react-hook-form";
+import React, {useState} from "react";
 import {Input} from "@nextui-org/input";
 import {Checkbox} from "@nextui-org/checkbox";
 import {Button} from "@nextui-org/button";
@@ -42,31 +42,58 @@ const priceRanges = [
     }
 ]
 
-const PricePerItem = ({onFilter}) => {
+interface Props {
+    onFilter: (price: { max: number; min: number }) => void;
+}
+
+interface PriceRange {
+    label: string;
+    min: number;
+    max: number;
+}
+
+interface PriceData {
+    minPrice: string;
+    maxPrice: string;
+}
+
+
+const PricePerItem: React.FC<Props> = ({onFilter}) => {
     const [isOpen, setIsOpen] = useState(false);
     const { register, handleSubmit, setValue } = useForm();
-    const [selectedRanges, setSelectedRanges] = useState([]);
+    const [selectedRanges, setSelectedRanges] = useState<PriceRange[]>([]);
 
-    const handleRangeChange = (range) => {
-        let updatedRanges = selectedRanges.includes(range)
-            ? selectedRanges.filter((r) => r !== range)
-            : [...selectedRanges, range];
+    const handleRangeChange = (range: { label: string; max: number; min: number }) => {
+        // Assuming `range` is a string like "min-max" and needs to be parsed
+        const min = range.min;
+        const max = range.max;
+        const label = range.label;
+
+        let updatedRanges: PriceRange[];
+
+        updatedRanges = selectedRanges.some(
+            (r: PriceRange) => r.min === min && r.max === max
+        )
+            ? selectedRanges.filter((r: PriceRange) => r.min !== min || r.max !== max)
+            : [...selectedRanges, { label, min, max }];
 
         setSelectedRanges(updatedRanges);
 
         if (updatedRanges.length) {
-            setValue("minPrice", Math.min(...updatedRanges.map((r) => r.min)));
-            setValue("maxPrice", Math.max(...updatedRanges.map((r) => r.max)));
+            setValue("minPrice", Math.min(...updatedRanges.map(r => r.min)));
+            setValue("maxPrice", Math.max(...updatedRanges.map(r => r.max)));
         } else {
             setValue("minPrice", "");
             setValue("maxPrice", "");
         }
     };
 
-    const onSubmit = (data) => {
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        const typeData = data as PriceData;
+
         onFilter({
-            min: data.minPrice ? parseInt(data.minPrice, 10) : 0,
-            max: data.maxPrice ? parseInt(data.maxPrice, 10) : 0
+            min: typeData.minPrice ? parseInt(typeData.minPrice, 10) : 0,
+            max: typeData.maxPrice ? parseInt(typeData.maxPrice, 10) : 0
         })
     }
 
