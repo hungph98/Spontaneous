@@ -46,10 +46,8 @@ const Reviews: React.FC<ReviewsProps> = ({reviews}) => {
             }
         };
         fetchReviews().then(() => {
-            console.log('oki')
-        }).catch(() => {
-            console.log('error')
-        });
+            return
+        })
     }, []);
 
     const formatDate = (isoString: moment.MomentInput) => {

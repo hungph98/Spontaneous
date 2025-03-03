@@ -42,7 +42,7 @@ const ProductPage = () => {
     }
 
     return (
-        <div className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64'}>
+        <div className={'mt-8 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 mb-24'}>
             <div className={'mt-32'}>
                 <Link href={'/public'}>
                     <Image src={leftArrow}
@@ -70,7 +70,7 @@ const ProductPage = () => {
                                             <span className={'mt-12 ml-8 text-xl font-[500]'}>
                                                 {catalog.title}
                                             </span>
-                                            <Link href={'/src/app/catalog' + catalog._id}>
+                                            <Link href={'/catalog/' + catalog._id}>
                                                 <button className={'mt-2 border bg-slate-200 rounded-lg p-2 ml-12'}>Learn more</button>
                                             </Link>
                                         </div>

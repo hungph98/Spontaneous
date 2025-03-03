@@ -62,7 +62,7 @@ const HomeDecor = () => {
                     {
                         categories.map((category) => (
                             <div key={category._id} className={'col-span-1 h-[250px]'}>
-                                <Link href={'/src/app/catalog/' + category._id}
+                                <Link href={'/catalog/' + category._id}
                                       className={'w-full h-full flex flex-col justify-center items-center'}>
                                     <div className={'relative w-full h-[250px]'}>
                                         <Image src={category.image}
@@ -84,7 +84,7 @@ const HomeDecor = () => {
                     {
                         categoryTrending.map((category) => (
                             <div key={category._id} className={'col-span-1 h-[250px]'}>
-                                <Link href={'/src/app/catalog/' + category._id}
+                                <Link href={'/catalog/' + category._id}
                                       className={'w-full h-full flex flex-col justify-center items-center'}>
                                     <div className={'relative w-full h-[250px]'}>
                                         <Image src={category.image}

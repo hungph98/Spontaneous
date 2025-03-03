@@ -44,7 +44,7 @@ const ItemInCart = ({productId}) => {
 
         if (productId) {
             fetchItem().then(() => {
-                console.log('oki')
+                return
             })
         }
     },[productId])

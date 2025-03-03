@@ -14,7 +14,7 @@ interface Product {
     image: string[];
 }
 
-const ProductsByCatalog = ({id}: {id: string}) => {
+const ProductsByCatalog = ({id}: { id: string }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [cart, setCart] = useState([]);
@@ -35,13 +35,13 @@ const ProductsByCatalog = ({id}: {id: string}) => {
 
         const response = await fetch("/api/cart", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(product),
         });
 
         const data = await response.json();
         setCart(data.cart);
-        localStorage.setItem("cart", JSON.stringify(data.cart))
+        localStorage.setItem("cart", JSON.stringify(data.cart));
     }
 
 
@@ -72,7 +72,7 @@ const ProductsByCatalog = ({id}: {id: string}) => {
                         <div className={'flex flex-col p-2 w-full'}>
                             <div className={'h-2/3 bg-gray-200'}>
                                 <div className={'relative w-full h-80'}>
-                                    <Link href={'/src/app/product/' + product._id}>
+                                    <Link href={'/product/' + product._id}>
                                         <Image src={product.image[0] ?? productImage}
                                                alt={'product'}
                                                fill

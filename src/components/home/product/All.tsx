@@ -4,8 +4,14 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import Link from "next/link";
 
+interface NewArrivals {
+    _id: string;
+    title: string;
+    image: string;
+}
+
 const All = () => {
-    const [newArrivals, setNewArrivals] = useState([])
+    const [newArrivals, setNewArrivals] = useState<NewArrivals[]>([])
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {

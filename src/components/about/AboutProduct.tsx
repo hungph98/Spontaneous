@@ -14,7 +14,7 @@ const AboutProduct = ({product}) => {
                         <div>
                             <h1 className={'text-center text-2xl mt-10'}>About {product.title}</h1>
                             <p className={'text-center mt-6'}>{product.title}'s team is obsessed with beautiful products that accentuate any home, inspired design that is attentive to every detail while enhancing usability, and unmatched quality that lasts a lifetime.</p>
-                            <Link href={`/src/app/brands/${product.title}`} className={'flex justify-center mt-10 mb-10'}>
+                            <Link href={`/brands/${product.title}`} className={'flex justify-center mt-10 mb-10'}>
                                 <button className={'w-[200px] h-[50px] border bg-white'}>Explore this Brand</button>
                             </Link>
                             <video controls className={'w-full h-full mb-20'}>

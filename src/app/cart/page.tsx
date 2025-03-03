@@ -51,10 +51,8 @@ const Cart = () => {
             }
         };
         fetchCart().then(() => {
-            console.log('oki')
-        }).catch(() => {
-            console.log('error')
-        });
+            return
+        })
     }, []);
 
     const quantityChange = (newQuantity: number) => {

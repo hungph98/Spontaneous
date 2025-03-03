@@ -13,6 +13,7 @@ const Navbar = () => {
                     </Link>
                     <div className={'hidden xl:flex gap-4 items-center'}>
                         <Link href={'/'} className={'text-xl'}>Home</Link>
+                        <Link href={'/inspiration'} className={'text-xl'}>Inspiration</Link>
                         <Link href={'/catalog'} className={'text-xl'}>Catalog</Link>
                         <Link href={'/aboutus'} className={'text-xl'}>About Us</Link>
                     </div>

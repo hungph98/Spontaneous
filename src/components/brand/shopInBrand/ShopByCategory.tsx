@@ -94,7 +94,7 @@ const ShopByCategory = ({title}) => {
                             products.map((product) => (
                                 <div className="col-span-1 flex shadow-[0_3px_10px_rgb(0,0,0,0.2)]" key={product._id}>
                                     <div className={'flex flex-col p-2 '}>
-                                        <Link href={'/src/app/product/' + product._id}>
+                                        <Link href={'/product/' + product._id}>
                                             <div className={'h-2/3 bg-gray-200'}>
                                                 <div className={'relative w-full h-60'}>
                                                     <Image src={product.image[0] ?? productImage}

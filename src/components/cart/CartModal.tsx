@@ -55,7 +55,7 @@ const CartModal = () => {
             }
         };
         fetchCart().then(() => {
-            console.log('oki')
+            return
         } );
     }, []);
 
